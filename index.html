@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyberpunk Vertical Glitch</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background-color: #0a0a12;
+            font-family: 'Courier New', monospace;
+            color: rgba(0, 255, 255, 0.7);
+            justify-content: center;
+        }
+        
+        .glitch-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .scanlines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                rgba(0, 255, 255, 0.03) 0%,
+                rgba(0, 255, 255, 0.03) 50%,
+                transparent 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            animation: scanline 8s linear infinite;
+        }
+        
+        .grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.15;
+        }
+        
+        .glitch-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .glitch-line {
+            position: absolute;
+            top: 0;
+            width: 1px;
+            height: 0;
+            background: rgba(0, 255, 255, 0.5);
+            opacity: 0;
+            animation-timing-function: linear;
+        }
+        
+        @keyframes scanline {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 100%; }
+        }
+        
+        .content {
+            padding: 2rem;
+            max-width: 800px;
+            margin: 100px auto 0; /* Added top margin */
+            background-color: rgba(10, 10, 20, 0.7);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+        
+        h1 {
+        color: rgba(255, 0, 200, 0.8);
+        text-shadow: 0 0 10px rgba(255, 0, 200, 0.8);
+        white-space: nowrap;
+        overflow: hidden;
+        margin: 0 0 20px 0;
+        text-align: center;
+        border-right: 2px solid rgba(255, 0, 200, 0.8);  /* Cursor */
+        width: fit-content; /* Makes the border-right only as wide as the text */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    @keyframes blink-caret {
+        from, to { border-color: transparent }
+        50% { border-color: rgba(255, 0, 200, 0.8); }
+    }
+        
+        a {
+            color: rgba(0, 200, 255, 0.9);
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+            text-shadow: 0 0 5px rgba(0, 200, 255, 0.7);
+        }
+
+        p {
+            text-align: center;
+        }
+        
+        .cards-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 70vh 70vh;
+  gap: 20px;
+  max-width: 1100px;
+  margin: 40px auto;
+  height: 90vh; /* full viewport height */
+}
+
+/* Each card fills its grid area */
+.card {
+    position: relative;
+  padding: 20px;
+  background-color: rgba(10, 10, 20, 0.7);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+  min-height: 0; /* allow height from grid */
+}
+
+.card.a {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+}
+
+.card.b {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+}
+
+.card.c {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+  grid-template-rows: 50vh 50vh;
+  height: 20vh; 
+}
+        
+        .card h2 {
+            color: rgba(0, 255, 255, 0.9);
+            margin-top: 0;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .card.a h2 {
+            color: rgba(0, 255, 255, 0.9);
+        }
+
+        .card.b h2 {
+            color: rgba(0, 255, 0, 0.8);
+        }
+
+        .card.c h2 {
+            color: rgba(255, 0, 200, 0.8);
+        }
+
+        .card a.github-icon {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 24px;
+        height: 24px;
+        opacity: 0.7;
+        transition: opacity 0.3s;
+        }
+        
+        @media (max-width: 768px) {
+            .cards-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="glitch-container">
+        <div class="glitch-lines" id="glitchLines"></div>
+        <div class="grid"></div>
+        <div class="scanlines"></div>
+    </div>
+    
+    <div class="content">
+        <h1 class="typewriter" id="typewriterTitle">Anisha Bhaskar Torres</h1>
+        <p>I'm a Computer Science student at The University of Texas at Austin with minors in Statistics & Data Science and Business. Passionate about full-stack development, and machine learning, I thrive on solving complex problems through innovative technology solutions.</p>
+    </div>
+    
+    <div class="cards-container">
+        <div class="card a">
+            <h2>Pantry Pal</h2>
+            <p>Full-stack AI micronutrient tracker that identifies foods from images and generates balanced recipes. Used OpenAI, ClarifAI, Nutritionix, Brite, and Google OAuth APIs.</p>
+            
+            <!-- Wrapper div for the iframe and its overlay link -->
+            <div style="position: relative; width: 100%; height: 300px; overflow: hidden;">
+                <iframe 
+                    src="https://pantrypal.pythonanywhere.com" 
+                    style="transform: scale(0.5); transform-origin: top left; width: 200%; height: 600px; border: none;">
+                </iframe>
+                <a href="https://pantrypal.pythonanywhere.com" target="_blank"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5;">
+                </a>
+            </div>
+            
+            <!-- GitHub link moved outside the iframe wrapper -->
+            <a class="github-icon" href="https://github.com/anisha1045/pantry-pal-project" target="_blank" 
+                style="display: inline-block; margin-top: 10px; width: 24px; height: 24px; opacity: 0.7; transition: opacity 0.3s;">
+                <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+                    <title>GitHub</title>
+                    <path d="M12 .297a12 12 0 00-3.79 23.4c.6.112.82-.26.82-.577v-2.234c-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.084-.73.084-.73 1.205.084 1.838 1.237 1.838 1.237 1.07 1.834 2.808 1.304 3.492.997.108-.774.418-1.304.76-1.605-2.665-.3-5.467-1.335-5.467-5.933 0-1.312.47-2.382 1.237-3.222-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.49 11.49 0 016 0c2.29-1.552 3.297-1.23 3.297-1.23.654 1.653.243 2.873.12 3.176.77.84 1.235 1.91 1.235 3.222 0 4.61-2.807 5.63-5.48 5.923.43.37.823 1.104.823 2.227v3.302c0 .32.22.694.825.577A12 12 0 0012 .297" />
+                </svg>
+            </a>
+        </div>
+        <div class="card b">
+            <h2>Reinforcement Learning Research</h2>
+            <p>Designed a reinforcement learning algorithm in Python to improve robot movement legibility using policy-shaped Q-learning. Achieved 30% gain in interpretability through user testing.</p>
+            <div style="position: relative; width: 100%; height: 300px; overflow: hidden;">
+                <iframe 
+                src="https://anisha1045.github.io" 
+                style="transform: scale(0.5); transform-origin: top left; width: 200%; height: 600px; border: none;">
+                </iframe>
+                <a href="https://anisha1045.github.io" target="_blank"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;">
+                </a>
+            </div>
+            <a class="github-icon" href="https://github.com/anisha1045/Q-Learning-Demo" target="_blank" 
+            style="position: absolute; bottom: 10px; right: 10px; width: 24px; height: 24px; opacity: 0.7; transition: opacity 0.3s;">
+            <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+            <title>GitHub</title>
+            <path d="M12 .297a12 12 0 00-3.79 23.4c.6.112.82-.26.82-.577v-2.234c-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.084-.73.084-.73 1.205.084 1.838 1.237 1.838 1.237 1.07 1.834 2.808 1.304 3.492.997.108-.774.418-1.304.76-1.605-2.665-.3-5.467-1.335-5.467-5.933 0-1.312.47-2.382 1.237-3.222-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.49 11.49 0 016 0c2.29-1.552 3.297-1.23 3.297-1.23.654 1.653.243 2.873.12 3.176.77.84 1.235 1.91 1.235 3.222 0 4.61-2.807 5.63-5.48 5.923.43.37.823 1.104.823 2.227v3.302c0 .32.22.694.825.577A12 12 0 0012 .297" />
+            </svg>
+            </a>
+
+            
+        </div>
+        <div class="card c">
+            <h2>Email Priority Filter</h2>
+            <p>Chrome extension that filters emails using user-trained Naive Bayes (Scikit-learn). Built with Flask, PostgreSQL, IndexedDB, Gmail API, and deployed on Render.</p>
+            <a class="github-icon" href="https://github.com/anisha1045/Email-Priority-Filter" target="_blank" 
+            style="position: absolute; bottom: 10px; right: 10px; width: 24px; height: 24px; opacity: 0.7; transition: opacity 0.3s;" >
+            <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+            <title>GitHub</title>
+            <path d="M12 .297a12 12 0 00-3.79 23.4c.6.112.82-.26.82-.577v-2.234c-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.084-.73.084-.73 1.205.084 1.838 1.237 1.838 1.237 1.07 1.834 2.808 1.304 3.492.997.108-.774.418-1.304.76-1.605-2.665-.3-5.467-1.335-5.467-5.933 0-1.312.47-2.382 1.237-3.222-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.49 11.49 0 016 0c2.29-1.552 3.297-1.23 3.297-1.23.654 1.653.243 2.873.12 3.176.77.84 1.235 1.91 1.235 3.222 0 4.61-2.807 5.63-5.48 5.923.43.37.823 1.104.823 2.227v3.302c0 .32.22.694.825.577A12 12 0 0012 .297" />
+            </svg>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Glitch lines effect
+        const glitchLines = document.getElementById('glitchLines');
+        const lineCount = 30;
+        const colors = [
+            'rgba(0, 255, 0, 0.8)',      // Toxic green
+            'rgba(0, 255, 255, 0.8)',     // Cyan
+            'rgba(255, 0, 200, 0.8)',     // Magenta
+        ];
+        
+        function createGlitchLine() {
+            const line = document.createElement('div');
+            line.className = 'glitch-line';
+            
+            const leftPos = Math.random() * 100;
+            line.style.left = `${leftPos}%`;
+            
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const duration = 0.5 + Math.random() * 0.5;
+            const delay = Math.random() * 15;
+            
+            line.style.background = color;
+            line.style.animation = `glitch-anim ${duration}s ${delay}s linear`;
+            
+            glitchLines.appendChild(line);
+            
+            setTimeout(() => {
+                line.remove();
+            }, (delay + duration) * 1000);
+        }
+        
+        for (let i = 0; i < lineCount; i++) {
+            setTimeout(createGlitchLine, Math.random() * 5000);
+        }
+        
+        setInterval(() => {
+            createGlitchLine();
+        }, 300);
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes glitch-anim {
+                0% { height: 0; opacity: 0; }
+                10% { height: 0; opacity: 0.8; }
+                20% { height: 20%; opacity: 0.8; }
+                30% { height: 40%; opacity: 0.8; }
+                40% { height: 60%; opacity: 0.8; }
+                50% { height: 80%; opacity: 0.8; }
+                60% { height: 100%; opacity: 0.8; }
+                70% { opacity: 0.5; }
+                80% { opacity: 0.3; }
+                100% { height: 100%; opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Typewriter effect
+        document.addEventListener('DOMContentLoaded', function() {
+        const title = document.getElementById('typewriterTitle');
+        const text = title.textContent;
+        title.textContent = '';
+        
+        let i = 0;
+        function typeWriter() {
+            if (i < text.length) {
+                title.textContent += text.charAt(i);
+                i++;
+                // More consistent timing with slight randomness
+                setTimeout(typeWriter, Math.random() * 50 + 50);
+            } else {
+                // Keep blinking cursor after typing is complete
+                title.style.animation = "blink-caret 0.75s step-end infinite";
+            }
+        }
+        
+        // Start typing after a short delay
+        setTimeout(typeWriter, 500);
+    });
+    </script>
+</body>
+</html>
