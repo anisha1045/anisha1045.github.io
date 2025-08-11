@@ -126,7 +126,7 @@
   gap: 20px;
   max-width: 1100px;
   margin: 40px auto;
-  height: 90vh; /* full viewport height */
+  height: auto; /* Changed from 90vh to auto to accommodate content */
 }
 
 /* Each card fills its grid area */
@@ -152,46 +152,61 @@
 .card.c {
   grid-column: 1 / 2;
   grid-row: 2 / 3;
-  grid-template-rows: 50vh 50vh;
-  height: 20vh; 
+}
+
+.card.d {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
 }
         
-        .card h2 {
-            color: rgba(0, 255, 255, 0.9);
-            margin-top: 0;
-            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
-            padding-bottom: 10px;
-        }
+.card h2 {
+    color: rgba(0, 255, 255, 0.9);
+    margin-top: 0;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+    padding-bottom: 10px;
+}
 
-        .card.a h2 {
-            color: rgba(0, 255, 255, 0.9);
-        }
+.card.a h2 {
+    color: rgba(0, 255, 255, 0.9);
+}
 
-        .card.b h2 {
-            color: rgba(0, 255, 0, 0.8);
-        }
+.card.b h2 {
+    color: rgba(0, 255, 0, 0.8);
+}
 
-        .card.c h2 {
-            color: rgba(255, 0, 200, 0.8);
-        }
+.card.c h2 {
+    color: rgba(255, 0, 200, 0.8);
+}
 
-        .card a.github-icon {
-        position: absolute;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 24px;
-        height: 24px;
-        opacity: 0.7;
-        transition: opacity 0.3s;
-        }
+.card.d h2 {
+    color: rgba(255, 165, 0, 0.8); /* Added orange color for the 4th card */
+}
+
+.card a.github-icon {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 24px;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
         
-        @media (max-width: 768px) {
-            .cards-container {
-                flex-direction: column;
-            }
-        }
-    </style>
+@media (max-width: 768px) {
+    .cards-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto;
+    }
+    .card.a, .card.b, .card.c, .card.d {
+        grid-column: 1 / 2;
+    }
+    .card.a { grid-row: 1 / 2; }
+    .card.b { grid-row: 2 / 3; }
+    .card.c { grid-row: 3 / 4; }
+    .card.d { grid-row: 4 / 5; }
+}
+</style>
 </head>
 <body>
     <div class="glitch-container">
@@ -230,29 +245,33 @@
                 </svg>
             </a>
         </div>
-        <div class="card b">
-            <h2>Reinforcement Learning Research</h2>
-            <p>Designed a reinforcement learning algorithm in Python to improve robot movement legibility using policy-shaped Q-learning. Achieved 30% gain in interpretability through user testing.</p>
-            <div style="position: relative; width: 100%; height: 300px; overflow: hidden;">
-                <iframe 
-                src="finalreport.pdf" 
-                style="transform: scale(0.5); transform-origin: top left; width: 200%; height: 600px; border: none;">
-                </iframe>
-                <a href="finalreport.pdf" target="_blank"
-                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;">
+
+            <div class="card b">
+                <h2>Trackademic</h2>
+                <p>React + Next.js application that parses academic syllabi to extract tasks and integrates with the Google Calendar API for automated scheduling.</p>
+                
+                <!-- Wrapper div for the iframe and its overlay link -->
+                <div style="position: relative; width: 100%; height: 300px; overflow: hidden;">
+                    <iframe 
+                        src="https://trackademic-qeu57y41f-anishas-projects-1c5f9254.vercel.app/" 
+                        style="transform: scale(0.5); transform-origin: top left; width: 200%; height: 600px; border: none;">
+                    </iframe>
+                    <a href="https://trackademic-qeu57y41f-anishas-projects-1c5f9254.vercel.app/" target="_blank"
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5;">
+                    </a>
+                </div>
+                
+                <!-- GitHub link moved outside the iframe wrapper -->
+                <a class="github-icon" href="https://github.com/anisha1045/trackademic" target="_blank" 
+                    style="display: inline-block; margin-top: 10px; width: 24px; height: 24px; opacity: 0.7; transition: opacity 0.3s;">
+                    <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+                        <title>GitHub</title>
+                        <path d="M12 .297a12 12 0 00-3.79 23.4c.6.112.82-.26.82-.577v-2.234c-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.084-.73.084-.73 1.205.084 1.838 1.237 1.838 1.237 1.07 1.834 2.808 1.304 3.492.997.108-.774.418-1.304.76-1.605-2.665-.3-5.467-1.335-5.467-5.933 0-1.312.47-2.382 1.237-3.222-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.49 11.49 0 016 0c2.29-1.552 3.297-1.23 3.297-1.23.654 1.653.243 2.873.12 3.176.77.84 1.235 1.91 1.235 3.222 0 4.61-2.807 5.63-5.48 5.923.43.37.823 1.104.823 2.227v3.302c0 .32.22.694.825.577A12 12 0 0012 .297" />
+                    </svg>
                 </a>
             </div>
-            <a class="github-icon" href="https://github.com/anisha1045/Q-Learning-Demo" target="_blank" 
-            style="position: absolute; bottom: 10px; right: 10px; width: 24px; height: 24px; opacity: 0.7; transition: opacity 0.3s;">
-            <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
-            <title>GitHub</title>
-            <path d="M12 .297a12 12 0 00-3.79 23.4c.6.112.82-.26.82-.577v-2.234c-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.084-.73.084-.73 1.205.084 1.838 1.237 1.838 1.237 1.07 1.834 2.808 1.304 3.492.997.108-.774.418-1.304.76-1.605-2.665-.3-5.467-1.335-5.467-5.933 0-1.312.47-2.382 1.237-3.222-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.49 11.49 0 016 0c2.29-1.552 3.297-1.23 3.297-1.23.654 1.653.243 2.873.12 3.176.77.84 1.235 1.91 1.235 3.222 0 4.61-2.807 5.63-5.48 5.923.43.37.823 1.104.823 2.227v3.302c0 .32.22.694.825.577A12 12 0 0012 .297" />
-            </svg>
-            </a>
 
-            
-        </div>
-        <div class="card c">
+        <div class="card d">
             <h2>Email Priority Filter</h2>
             <p>Chrome extension that filters emails using user-trained Naive Bayes (Scikit-learn). Built with Flask, PostgreSQL, IndexedDB, Gmail API, and deployed on Render.</p>
             <a class="github-icon" href="https://github.com/anisha1045/Email-Priority-Filter" target="_blank" 
@@ -263,7 +282,30 @@
             </svg>
             </a>
         </div>
+
+    <div class="card c">
+        <h2>Reinforcement Learning Research</h2>
+        <p>Designed a reinforcement learning algorithm in Python to improve robot movement legibility using policy-shaped Q-learning. Achieved 30% gain in interpretability through user testing.</p>
+        <div style="position: relative; width: 100%; height: 300px; overflow: hidden;">
+            <iframe 
+            src="finalreport.pdf" 
+            style="transform: scale(0.5); transform-origin: top left; width: 200%; height: 600px; border: none;">
+            </iframe>
+            <a href="finalreport.pdf" target="_blank"
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;">
+            </a>
+        </div>
+        <a class="github-icon" href="https://github.com/anisha1045/Q-Learning-Demo" target="_blank" 
+        style="position: absolute; bottom: 10px; right: 10px; width: 24px; height: 24px; opacity: 0.7; transition: opacity 0.3s;">
+        <svg role="img" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+        <title>GitHub</title>
+        <path d="M12 .297a12 12 0 00-3.79 23.4c.6.112.82-.26.82-.577v-2.234c-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.084-.73.084-.73 1.205.084 1.838 1.237 1.838 1.237 1.07 1.834 2.808 1.304 3.492.997.108-.774.418-1.304.76-1.605-2.665-.3-5.467-1.335-5.467-5.933 0-1.312.47-2.382 1.237-3.222-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.49 11.49 0 016 0c2.29-1.552 3.297-1.23 3.297-1.23.654 1.653.243 2.873.12 3.176.77.84 1.235 1.91 1.235 3.222 0 4.61-2.807 5.63-5.48 5.923.43.37.823 1.104.823 2.227v3.302c0 .32.22.694.825.577A12 12 0 0012 .297" />
+        </svg>
+        </a>
+
+        
     </div>
+</div>
 
     <script>
         // Glitch lines effect
